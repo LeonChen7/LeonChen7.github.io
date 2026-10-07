@@ -112,8 +112,11 @@ h3,
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 1.75rem;
-  font-family: var(--mono);
-  font-size: var(--meta);
+  /* the same handwriting as the "that's me" note */
+  font-family: var(--hand);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .header__cv {
@@ -141,7 +144,7 @@ h3,
 }
 
 .hero__kicker {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--meta);
   color: var(--muted);
 }
@@ -181,8 +184,7 @@ h3,
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  font-family: var(--mono);
-  font-size: var(--meta);
+  font-size: 1rem; /* same typeface as the running text */
 }
 
 .chips li {
@@ -300,7 +302,7 @@ h3,
   justify-content: center;
   padding: 1.25rem;
   text-align: center;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--meta);
   color: var(--muted);
 }
@@ -421,7 +423,7 @@ h3,
 
 .row__meta {
   flex: 0 0 9rem;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--meta);
   color: var(--muted);
   line-height: 1.9;
@@ -506,7 +508,7 @@ h3,
   flex-wrap: wrap;
   align-items: center;
   gap: 0.25rem 1.25rem;
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--meta);
   color: var(--muted);
 }
@@ -611,7 +613,7 @@ h3,
 }
 
 .stack__meta {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--meta);
   font-weight: 400;
   color: var(--muted);
@@ -637,7 +639,7 @@ h3,
 }
 
 .note__back {
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--meta);
   text-decoration: none;
   display: flex;
@@ -722,7 +724,7 @@ h3,
   gap: 0.5rem 2rem;
   padding: 2.5rem 0 4rem;
   border-top: 1px solid var(--line);
-  font-family: var(--mono);
+  font-family: var(--sans);
   font-size: var(--meta);
   color: var(--muted);
 }
