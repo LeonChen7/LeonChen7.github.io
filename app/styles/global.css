@@ -72,9 +72,9 @@ h3,
 
 /* Uses most of a laptop/desktop screen; side padding grows with the window. */
 .page {
-  max-width: 1440px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 0 clamp(1.5rem, 6vw, 6rem);
+  padding: 0 clamp(1.5rem, 4vw, 4rem);
 }
 
 .doodle {
