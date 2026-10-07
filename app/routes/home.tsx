@@ -5,6 +5,7 @@ import profile from "../content/profile.json";
 import { plainText } from "../lib/format";
 import { Hero } from "../modules/Hero";
 import { activeModules } from "../modules/registry";
+import { siteConfig } from "../site.config";
 
 export const meta = () => [
   { title: profile.name },
@@ -15,7 +16,7 @@ export default function Home() {
   const modules = activeModules();
   return (
     <div className="page">
-      <Header nav={modules} />
+      <Header nav={modules} liveDog={siteConfig.portraitPet} />
       <main>
         <Hero />
         {modules.map(({ id, title, doodle, motion, Component }, i) => (

@@ -40,6 +40,10 @@
   "portrait": "/assets/img/portrait.jpg",
   "portraitSketch": "/assets/img/portrait-sketch.svg",
   "portraitNote": "that's me",
-  "motto": ["We are what", "we repeatedly do."],
+  "motto": [
+    "“We are what",
+    "we repeatedly do.”"
+  ],
+  "mottoBy": "Will Durant",
   "cv": "#top"
 }

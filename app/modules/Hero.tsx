@@ -175,7 +175,12 @@ export function Hero() {
         <Doodle def={sparkle} className="portrait__sparkle" />
         {profile.motto.length > 0 && (
           // Written out under the portrait once it has been pulled into place.
-          <Handwritten lines={profile.motto} wait={intro} className="portrait__motto" />
+          <Handwritten
+            lines={profile.motto}
+            signature={profile.mottoBy}
+            wait={intro}
+            className="portrait__motto"
+          />
         )}
         {siteConfig.portraitPet && <Shepherd intro={intro} />}
         </motion.div>

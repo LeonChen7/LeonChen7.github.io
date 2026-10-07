@@ -1,19 +1,21 @@
 import { motion, useReducedMotion } from "motion/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 /**
- * A small German Shepherd doodle that lives around the portrait.
- * - It turns to face the cursor.
- * - Touching it with the cursor (or tapping it, or pressing Enter on it)
- *   makes it run to another spot.
+ * A small German Shepherd doodle.
+ * - With `intro` on, it stands to the left of the portrait holding a rope in
+ *   its mouth and leans back as if hauling the portrait in (the portrait's
+ *   own slide-in lives in Hero.tsx).
+ * - When `intro` turns off it drops the rope and trots up to its seat in the
+ *   top-left corner of the header, where it stays.
+ * - It turns to face the cursor. Touching it with the cursor (or tapping it,
+ *   or pressing Enter on it) sends it running somewhere else: one of the
+ *   spots around the portrait, or back to its seat.
  *
- * With `intro` on, it first stands to the left of the portrait holding a
- * rope in its mouth and leans back as if hauling the portrait in (the
- * portrait's own slide-in lives in Hero.tsx); when `intro` turns off it drops
- * the rope and trots to its usual spot.
- *
- * Spots are given relative to the portrait box: `left`/`top` are where the
- * dog's feet go (0% = left/top edge, 100% = right/bottom edge).
+ * It is positioned inside the portrait box. `left`/`top` say where its feet
+ * go, as a percentage of that box (0% = left/top edge, 100% = right/bottom).
+ * The header seat lies outside the box, so its percentages are worked out
+ * from where the seat actually is on the page.
  */
 const SPOTS = [
   { left: "96%", top: "1%" }, // sitting on the top edge
@@ -22,25 +24,54 @@ const SPOTS = [
   { left: "-9%", top: "74%" }, // beside the left edge
 ];
 
-// Where it stands while pulling, and where it settles afterwards.
+// Where it stands while pulling.
 const INTRO_SPOT = { left: "-42%", top: "74%" };
-const AFTER_INTRO = 3;
 
+type Place = "home" | number;
+type Position = { left: string; top: string };
 type Facing = "left" | "right";
 
 export function Shepherd({ intro = false }: { intro?: boolean }) {
-  const [spot, setSpot] = useState(intro ? AFTER_INTRO : 0);
+  const [place, setPlace] = useState<Place>("home");
+  const [home, setHome] = useState<Position | null>(null);
   const [facing, setFacing] = useState<Facing>(intro ? "right" : "left");
   const [running, setRunning] = useState(false);
-  const wasIntro = useRef(intro);
+  // Whether the current run is to or from the header (a longer way to go).
+  const [farTrip, setFarTrip] = useState(true);
   const ref = useRef<HTMLButtonElement>(null);
+  const wasIntro = useRef(intro);
   const reduceMotion = useReducedMotion();
 
-  // Intro over: trot from the pulling position to the resting spot.
-  useEffect(() => {
-    if (wasIntro.current && !intro) setRunning(true);
-    wasIntro.current = intro;
+  // Find the header seat, as percentages of the portrait box. Measured once
+  // the portrait is in its final place, and again whenever the window resizes.
+  useLayoutEffect(() => {
+    if (intro) return;
+    const measure = () => {
+      const box = ref.current?.offsetParent?.getBoundingClientRect();
+      const seat = document.querySelector("[data-dog-home]")?.getBoundingClientRect();
+      if (!box || !seat || !box.width || !box.height) return;
+      setHome({
+        left: `${(((seat.left + seat.width / 2 - box.left) / box.width) * 100).toFixed(2)}%`,
+        top: `${(((seat.bottom + 6 - box.top) / box.height) * 100).toFixed(2)}%`,
+      });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
   }, [intro]);
+
+  // Until the seat has been measured, wait beside the portrait.
+  const positionOf = (p: Place): Position => (p === "home" ? (home ?? SPOTS[3]) : SPOTS[p]);
+  const target = intro ? INTRO_SPOT : positionOf(place);
+
+  // Intro over: head for the seat, facing the way it is going.
+  useEffect(() => {
+    if (wasIntro.current && !intro) {
+      setFacing(home && parseFloat(home.left) > parseFloat(INTRO_SPOT.left) ? "right" : "left");
+      setRunning(true);
+    }
+    wasIntro.current = intro;
+  }, [intro, home]);
 
   // Idle: look towards the cursor.
   useEffect(() => {
@@ -59,74 +90,81 @@ export function Shepherd({ intro = false }: { intro?: boolean }) {
 
   const run = () => {
     if (running || intro) return;
-    // Any spot except the current one.
-    const next = (spot + 1 + Math.floor(Math.random() * (SPOTS.length - 1))) % SPOTS.length;
-    setFacing(parseFloat(SPOTS[next].left) < parseFloat(SPOTS[spot].left) ? "left" : "right");
+    // Anywhere except where it is now.
+    const places: Place[] = ["home", 0, 1, 2, 3];
+    const others = places.filter((p) => p !== place);
+    const next = others[Math.floor(Math.random() * others.length)];
+    setFacing(parseFloat(positionOf(next).left) < parseFloat(positionOf(place).left) ? "left" : "right");
+    setFarTrip(next === "home" || place === "home");
     setRunning(true);
-    setSpot(next);
+    setPlace(next);
   };
 
   const hop = running && !reduceMotion;
   const pull = intro && !reduceMotion;
+  // Longer trips take more time and more hops.
+  const trip = farTrip ? 1.3 : 0.7;
 
   return (
     <>
       {intro && <span aria-hidden="true" className="shepherd__rope" />}
-    <motion.button
-      ref={ref}
-      type="button"
-      className="shepherd"
-      aria-label="A little German Shepherd. Touch it and it runs to another spot."
-      onPointerEnter={run}
-      onClick={run}
-      initial={false}
-      animate={intro ? INTRO_SPOT : SPOTS[spot]}
-      transition={reduceMotion ? { duration: 0 } : { duration: 0.7, ease: [0.45, 0, 0.25, 1] }}
-      onAnimationComplete={() => setRunning(false)}
-    >
-      <motion.span
-        className="shepherd__hop"
-        animate={
-          pull
-            ? { y: 0, rotate: [-4, -14, -4, -14, -4, -14, -4] } // leaning back on the rope
-            : hop
-              ? { y: [0, -12, 0, -9, 0, -6, 0], rotate: [0, -6, 4, -5, 3, -2, 0] }
-              : { y: 0, rotate: 0 }
-        }
-        transition={{ duration: pull ? 2.4 : 0.7, ease: "easeInOut" }}
+      <motion.button
+        ref={ref}
+        type="button"
+        className="shepherd"
+        aria-label="A little German Shepherd. Touch it and it runs somewhere else."
+        onPointerEnter={run}
+        onClick={run}
+        initial={false}
+        animate={target}
+        transition={reduceMotion ? { duration: 0 } : { duration: trip, ease: [0.45, 0, 0.25, 1] }}
+        onAnimationComplete={() => setRunning(false)}
       >
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 80 76"
-          className="shepherd__art"
-          style={{ transform: facing === "left" ? undefined : "scaleX(-1)" }}
-          fill="none"
-          stroke="var(--ink)"
-          strokeWidth="1.9"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+        <motion.span
+          className="shepherd__hop"
+          animate={
+            pull
+              ? { y: 0, rotate: [-4, -14, -4, -14, -4, -14, -4] } // leaning back on the rope
+              : hop
+                ? farTrip
+                  ? { y: [0, -12, 0, -10, 0, -10, 0, -8, 0, -6, 0], rotate: [0, -6, 4, -5, 4, -5, 3, -4, 3, -2, 0] }
+                  : { y: [0, -12, 0, -9, 0, -6, 0], rotate: [0, -6, 4, -5, 3, -2, 0] }
+                : { y: 0, rotate: 0 }
+          }
+          transition={{ duration: pull ? 2.4 : trip, ease: "easeInOut" }}
         >
-          <path className="shepherd__tail" d="M59 62 C 69 63, 77 56, 73 45" />
-          {/* body, with the dark saddle on the back */}
-          <path d="M27 39 C 24 48, 26 60, 27 70 L 60 70 C 63 44, 55 28, 44 21 Z" fill="var(--bg)" stroke="none" />
-          <path d="M44 21 C 55 28, 63 44, 60 70" />
-          <path d="M45 22 C 55 29, 61 42, 60 58 C 55 48, 50 40, 43 35 Z" fill="var(--ink)" fillOpacity="0.82" stroke="none" />
-          <path d="M27 39 C 24 48, 26 60, 27 70 L 37 70" />
-          <path d="M37 70 C 36 61, 37 54, 39 48" />
-          <path d="M60 70 L 42 70 C 39 60, 47 51, 57 55" />
-          {/* head */}
-          <path d="M24 15 L 21 1 L 33 11" fill="var(--bg)" />
-          <path d="M35 11 L 43 0 L 46 16" fill="var(--bg)" />
-          <path
-            d="M24 15 C 18 19, 11 24, 6 28 C 3 30, 4 35, 9 35 L 20 36 C 24 41, 34 42, 40 37 C 47 31, 49 22, 46 16 L 35 11 L 33 11 Z"
-            fill="var(--bg)"
-          />
-          <path d="M6 28 C 3 30, 4 35, 9 35 L 15 35.5 C 16 31, 13 27, 10 25.5 Z" fill="var(--ink)" fillOpacity="0.82" stroke="none" />
-          <circle cx="25" cy="23.500" r="2" fill="var(--ink)" stroke="none" />
-          <path d="M14 35.5 C 13.500 41, 19.500 41.500, 20 36" stroke="var(--accent)" fill="var(--accent)" fillOpacity="0.25" />
-        </svg>
-      </motion.span>
-    </motion.button>
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 80 76"
+            className="shepherd__art"
+            style={{ transform: facing === "left" ? undefined : "scaleX(-1)" }}
+            fill="none"
+            stroke="var(--ink)"
+            strokeWidth="1.9"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path className="shepherd__tail" d="M59 62 C 69 63, 77 56, 73 45" />
+            {/* body, with the dark saddle on the back */}
+            <path d="M27 39 C 24 48, 26 60, 27 70 L 60 70 C 63 44, 55 28, 44 21 Z" fill="var(--bg)" stroke="none" />
+            <path d="M44 21 C 55 28, 63 44, 60 70" />
+            <path d="M45 22 C 55 29, 61 42, 60 58 C 55 48, 50 40, 43 35 Z" fill="var(--ink)" fillOpacity="0.82" stroke="none" />
+            <path d="M27 39 C 24 48, 26 60, 27 70 L 37 70" />
+            <path d="M37 70 C 36 61, 37 54, 39 48" />
+            <path d="M60 70 L 42 70 C 39 60, 47 51, 57 55" />
+            {/* head */}
+            <path d="M24 15 L 21 1 L 33 11" fill="var(--bg)" />
+            <path d="M35 11 L 43 0 L 46 16" fill="var(--bg)" />
+            <path
+              d="M24 15 C 18 19, 11 24, 6 28 C 3 30, 4 35, 9 35 L 20 36 C 24 41, 34 42, 40 37 C 47 31, 49 22, 46 16 L 35 11 L 33 11 Z"
+              fill="var(--bg)"
+            />
+            <path d="M6 28 C 3 30, 4 35, 9 35 L 15 35.5 C 16 31, 13 27, 10 25.5 Z" fill="var(--ink)" fillOpacity="0.82" stroke="none" />
+            <circle cx="25" cy="23.500" r="2" fill="var(--ink)" stroke="none" />
+            <path d="M14 35.5 C 13.500 41, 19.500 41.500, 20 36" stroke="var(--accent)" fill="var(--accent)" fillOpacity="0.25" />
+          </svg>
+        </motion.span>
+      </motion.button>
     </>
   );
 }

@@ -4,6 +4,8 @@ import { useRef } from "react";
 interface Props {
   /** One string per line; each later line is indented a bit further. */
   lines: string[];
+  /** Who said it; written last, smaller, as "— Name". */
+  signature?: string;
   /** Hold the writing back (e.g. until the portrait has landed). */
   wait?: boolean;
   className?: string;
@@ -17,19 +19,25 @@ const LINE_PAUSE = 0.35; // extra pause before starting the next line
  * to right, one after another, line by line. It starts once the text is on
  * screen (and `wait` is off), and plays once.
  */
-export function Handwritten({ lines, wait = false, className }: Props) {
+export function Handwritten({ lines: text, signature, wait = false, className }: Props) {
+  const lines = signature ? [...text, `\u2014 ${signature}`] : text;
   const ref = useRef<HTMLParagraphElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.6 });
   const writing = inView && !wait;
 
   let written = 0; // letters before the current one, for the delay
   return (
-    <p ref={ref} className={className} aria-label={lines.join(" ")}>
+    <p ref={ref} className={className} aria-label={`${text.join(" ")}${signature ? ` (${signature})` : ""}`}>
       {lines.map((line, l) => {
         const lineStart = written * PER_LETTER + l * LINE_PAUSE;
         written += line.length;
         return (
-          <span key={l} aria-hidden="true" className="handwritten__line" style={{ marginLeft: `${l * 2.75}em` }}>
+          <span
+            key={l}
+            aria-hidden="true"
+            className={signature && l === lines.length - 1 ? "handwritten__line handwritten__sign" : "handwritten__line"}
+            style={{ marginLeft: `${l * 2.75}em` }}
+          >
             {[...line].map((char, c) =>
               char === " " ? (
                 " "
