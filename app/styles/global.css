@@ -106,7 +106,7 @@ h3,
 /* Top-left corner: the dog's seat on the home page, a home link elsewhere. */
 .header__home {
   flex: none;
-  width: 68px;
+  width: 46px;
   height: 44px;
 }
 
@@ -361,6 +361,7 @@ h3,
   /* left/top (set from Shepherd.tsx) place the dog's feet. */
   width: 68px;
   margin: -65px 0 0 -34px;
+  transform-origin: 50% 100%; /* it shrinks towards its feet when seated */
   padding: 0;
   border: 0;
   background: none;

@@ -24,6 +24,9 @@ const SPOTS = [
   { left: "-9%", top: "74%" }, // beside the left edge
 ];
 
+// How big it is in the header, relative to its size beside the portrait.
+const SEATED_SCALE = 0.66;
+
 // Where it stands while pulling.
 const INTRO_SPOT = { left: "-42%", top: "74%" };
 
@@ -52,7 +55,7 @@ export function Shepherd({ intro = false }: { intro?: boolean }) {
       if (!box || !seat || !box.width || !box.height) return;
       setHome({
         left: `${(((seat.left + seat.width / 2 - box.left) / box.width) * 100).toFixed(2)}%`,
-        top: `${(((seat.bottom + 6 - box.top) / box.height) * 100).toFixed(2)}%`,
+        top: `${(((seat.bottom - box.top) / box.height) * 100).toFixed(2)}%`,
       });
     };
     measure();
@@ -63,6 +66,8 @@ export function Shepherd({ intro = false }: { intro?: boolean }) {
   // Until the seat has been measured, wait beside the portrait.
   const positionOf = (p: Place): Position => (p === "home" ? (home ?? SPOTS[3]) : SPOTS[p]);
   const target = intro ? INTRO_SPOT : positionOf(place);
+  // In the header it sits at logo size, so it matches the nav beside it.
+  const seated = !intro && place === "home" && home !== null;
 
   // Intro over: head for the seat, facing the way it is going.
   useEffect(() => {
@@ -116,7 +121,7 @@ export function Shepherd({ intro = false }: { intro?: boolean }) {
         onPointerEnter={run}
         onClick={run}
         initial={false}
-        animate={target}
+        animate={{ ...target, scale: seated ? SEATED_SCALE : 1 }}
         transition={reduceMotion ? { duration: 0 } : { duration: trip, ease: [0.45, 0, 0.25, 1] }}
         onAnimationComplete={() => setRunning(false)}
       >
