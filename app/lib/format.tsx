@@ -11,15 +11,27 @@ export function formatDate(iso: string): string {
 
 /**
  * Renders text containing Markdown-style [label](url) links and **bold**.
- * `renderBold` swaps in a custom element for the bold parts (it gets the
- * text and that part's position among the bold parts: 0, 1, 2…).
+ * `renderBold` swaps in a custom element for the bold parts. It gets the
+ * text, that part's position among the bold parts (0, 1, 2…), and any
+ * punctuation that directly follows it, which it should keep attached.
  */
 export function withLinks(
   text: string,
-  renderBold?: (text: string, index: number) => ReactNode,
+  renderBold?: (text: string, index: number, trailing: string) => ReactNode,
 ): ReactNode[] {
   let boldCount = 0;
-  return text.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g).map((part, i) => {
+  const parts = text.split(/(\[[^\]]+\]\([^)]+\)|\*\*[^*]+\*\*)/g);
+  if (renderBold) {
+    // Hand the punctuation after each bold part to that part.
+    for (let i = 0; i < parts.length - 1; i++) {
+      if (!/^\*\*[^*]+\*\*$/.test(parts[i])) continue;
+      const punct = /^[,.;:!?)]+/.exec(parts[i + 1])?.[0] ?? "";
+      parts[i] += `\u0000${punct}`;
+      parts[i + 1] = parts[i + 1].slice(punct.length);
+    }
+  }
+  return parts.map((raw, i) => {
+    const [part, trailing = ""] = raw.split("\u0000");
     const link = /^\[([^\]]+)\]\(([^)]+)\)$/.exec(part);
     if (link) {
       return (
@@ -30,7 +42,7 @@ export function withLinks(
     }
     const bold = /^\*\*([^*]+)\*\*$/.exec(part);
     if (!bold) return part;
-    if (renderBold) return <span key={i}>{renderBold(bold[1], boldCount++)}</span>;
+    if (renderBold) return <span key={i}>{renderBold(bold[1], boldCount++, trailing)}</span>;
     return <strong key={i}>{bold[1]}</strong>;
   });
 }

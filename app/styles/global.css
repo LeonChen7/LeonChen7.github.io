@@ -179,6 +179,10 @@ h3,
   display: inline-block;
 }
 
+.hero__trailing {
+  font-weight: 400;
+}
+
 .chips {
   list-style: none;
   margin: 0;
@@ -372,6 +376,28 @@ h3,
   }
   to {
     transform: rotate(16deg);
+  }
+}
+
+/* Window too narrow for text and portrait side by side: stack them and
+   centre the portrait (with room either side for the dog). */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero__text {
+    flex: none;
+    align-self: stretch;
+    max-width: none;
+  }
+
+  .portrait {
+    flex: none;
+    width: 100%;
+    max-width: min(320px, 70%);
+    margin-right: 0;
   }
 }
 

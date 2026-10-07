@@ -27,12 +27,13 @@ function chipHues(): (number | undefined)[] {
  * sentence. Its space is held open from the start, so nothing shifts when it
  * lands. Each word falls separately, so a keyword can still wrap across lines.
  */
-function FallingKeyword({ text, index }: { text: string; index: number }) {
+function FallingKeyword({ text, index, trailing }: { text: string; index: number; trailing: string }) {
   const start = 1.1 + index * 0.35; // seconds after load; keywords land one after another
   return (
     <strong>
       {text.split(" ").map((word, w, words) => (
-        <span key={w}>
+        // nowrap keeps the last word and its punctuation on one line
+        <span key={w} style={{ whiteSpace: "nowrap" }}>
           <motion.span
             data-reveal
             className="hero__falling"
@@ -48,7 +49,7 @@ function FallingKeyword({ text, index }: { text: string; index: number }) {
           >
             {word}
           </motion.span>
-          {w < words.length - 1 && " "}
+          {w < words.length - 1 ? " " : <span className="hero__trailing">{trailing}</span>}
         </span>
       ))}
     </strong>
@@ -86,8 +87,8 @@ export function Hero() {
         </Item>
         <Item>
           <p className="hero__bio">
-            {withLinks(profile.bio, (text, index) => (
-              <FallingKeyword text={text} index={index} />
+            {withLinks(profile.bio, (text, index, trailing) => (
+              <FallingKeyword text={text} index={index} trailing={trailing} />
             ))}
           </p>
         </Item>
