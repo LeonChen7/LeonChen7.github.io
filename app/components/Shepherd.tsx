@@ -24,6 +24,14 @@ const SPOTS = [
   { left: "-9%", top: "74%" }, // beside the left edge
 ];
 
+// German Shepherd colouring, black & tan: black back, ears, crown and
+// muzzle; tan face, chest and legs.
+const COAT = {
+  tan: "#c98a45",
+  black: "#26211e",
+  tongue: "#e58a95",
+};
+
 // How big it is in the header, relative to its size beside the portrait.
 const SEATED_SCALE = 0.66;
 
@@ -149,24 +157,34 @@ export function Shepherd({ intro = false }: { intro?: boolean }) {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <path className="shepherd__tail" d="M59 62 C 69 63, 77 56, 73 45" />
-            {/* body, with the dark saddle on the back */}
-            <path d="M27 39 C 24 48, 26 60, 27 70 L 60 70 C 63 44, 55 28, 44 21 Z" fill="var(--bg)" stroke="none" />
+            {/* tail */}
+            <path className="shepherd__tail" d="M59 62 C 69 63, 77 56, 73 45" stroke={COAT.black} strokeWidth="5.5" />
+            {/* body: black back, tan chest and legs */}
+            <path d="M27 39 C 24 48, 26 60, 27 70 L 60 70 C 63 44, 55 28, 44 21 Z" fill={COAT.black} stroke="none" />
+            <path d="M28 40 C 26 50, 28 60, 30 68 C 34 58, 35 48, 34 40 Z" fill={COAT.tan} stroke="none" />
             <path d="M44 21 C 55 28, 63 44, 60 70" />
-            <path d="M45 22 C 55 29, 61 42, 60 58 C 55 48, 50 40, 43 35 Z" fill="var(--ink)" fillOpacity="0.82" stroke="none" />
+            <path
+              d="M37 70 C 36 61, 37 54, 39 48 C 44 50, 50 52, 57 55 C 47 51, 39 60, 42 70 Z"
+              fill={COAT.tan}
+              stroke="none"
+            />
+            <path d="M42 70 C 39 60, 47 51, 57 55 C 60 60, 60 66, 60 70 Z" fill={COAT.tan} stroke="none" />
             <path d="M27 39 C 24 48, 26 60, 27 70 L 37 70" />
             <path d="M37 70 C 36 61, 37 54, 39 48" />
             <path d="M60 70 L 42 70 C 39 60, 47 51, 57 55" />
-            {/* head */}
-            <path d="M24 15 L 21 1 L 33 11" fill="var(--bg)" />
-            <path d="M35 11 L 43 0 L 46 16" fill="var(--bg)" />
+            {/* head: tan face, black ears, crown and muzzle */}
+            <path d="M24 15 L 21 1 L 33 11" fill={COAT.black} />
+            <path d="M35 11 L 43 0 L 46 16" fill={COAT.black} />
+            <path d="M26 13 L 24.500 6 L 30 11 Z" fill={COAT.tan} stroke="none" />
+            <path d="M37.500 12 L 42 5 L 43.500 14 Z" fill={COAT.tan} stroke="none" />
             <path
               d="M24 15 C 18 19, 11 24, 6 28 C 3 30, 4 35, 9 35 L 20 36 C 24 41, 34 42, 40 37 C 47 31, 49 22, 46 16 L 35 11 L 33 11 Z"
-              fill="var(--bg)"
+              fill={COAT.tan}
             />
-            <path d="M6 28 C 3 30, 4 35, 9 35 L 15 35.5 C 16 31, 13 27, 10 25.5 Z" fill="var(--ink)" fillOpacity="0.82" stroke="none" />
-            <circle cx="25" cy="23.500" r="2" fill="var(--ink)" stroke="none" />
-            <path d="M14 35.5 C 13.500 41, 19.500 41.500, 20 36" stroke="var(--accent)" fill="var(--accent)" fillOpacity="0.25" />
+            <path d="M33 11 L 35 11 L 46 16 C 48 21, 47 27, 44 32 C 40 26, 34 20, 27 16 Z" fill={COAT.black} stroke="none" />
+            <path d="M6 28 C 3 30, 4 35, 9 35 L 17 35.700 C 19 30, 15 25, 11 24.500 Z" fill={COAT.black} stroke="none" />
+            <circle cx="25" cy="23.500" r="2.200" fill="var(--ink)" stroke="none" />
+            <path d="M14 35.500 C 13.500 41, 19.500 41.500, 20 36" fill={COAT.tongue} strokeWidth="1.5" />
           </svg>
         </motion.span>
       </motion.button>
