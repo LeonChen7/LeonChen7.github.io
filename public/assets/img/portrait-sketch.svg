@@ -3,7 +3,7 @@
     <clipPath id="shirtL"><path d="M104 174 C 80 180, 58 190, 48 206 C 40 232, 38 270, 36 300 L 92 300 C 94 260, 96 220, 100 186 Z"/></clipPath>
     <clipPath id="shirtR"><path d="M136 174 C 160 180, 182 190, 192 206 C 200 232, 202 270, 204 300 L 148 300 C 146 260, 144 220, 140 186 Z"/></clipPath>
   </defs>
-  <rect width="240" height="300" fill="#f6f7f8"/>
+  <rect width="240" height="300" fill="#ffffff"/>
   <!-- bamboo leaves, top left -->
   <g fill="none" stroke="#2b4fc2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <path d="M0 34 C 22 30, 44 20, 62 2"/>
@@ -30,12 +30,12 @@
     <path d="M80 186 C 76 214, 76 244, 78 272" stroke-width="9" stroke-opacity="0.86"/>
     <path d="M160 186 C 164 214, 164 244, 162 272" stroke-width="9" stroke-opacity="0.86"/>
     <!-- neck -->
-    <path d="M107 156 L 106 178 C 114 186, 126 186, 134 178 L 133 156" fill="#f6f7f8"/>
+    <path d="M107 156 L 106 178 C 114 186, 126 186, 134 178 L 133 156" fill="#ffffff"/>
     <!-- ears -->
-    <path d="M88 112 C 79 109, 79 127, 90 129" fill="#f6f7f8"/>
-    <path d="M152 112 C 161 109, 161 127, 150 129" fill="#f6f7f8"/>
+    <path d="M88 112 C 79 109, 79 127, 90 129" fill="#ffffff"/>
+    <path d="M152 112 C 161 109, 161 127, 150 129" fill="#ffffff"/>
     <!-- face -->
-    <path d="M87 96 C 85 138, 100 164, 120 165 C 140 164, 155 138, 153 96" fill="#f6f7f8"/>
+    <path d="M87 96 C 85 138, 100 164, 120 165 C 140 164, 155 138, 153 96" fill="#ffffff"/>
     <!-- hair -->
     <path d="M85 112 C 76 72, 98 50, 124 52 C 152 52, 164 78, 155 112 C 153 100, 149 92, 143 88 C 138 95, 130 94, 125 87 C 119 96, 109 96, 103 89 C 94 93, 88 100, 85 112 Z" fill="#16181d" fill-opacity="0.86"/>
     <path d="M112 54 C 110 46, 116 42, 120 46"/>
