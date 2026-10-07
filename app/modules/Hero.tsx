@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "motion/react";
 import { useState, type CSSProperties } from "react";
 import { Doodle } from "../components/Doodle";
+import { Handwritten } from "../components/Handwritten";
 import { arrow, sparkle } from "../components/doodles";
 import { Shepherd } from "../components/Shepherd";
 import profile from "../content/profile.json";
@@ -172,6 +173,10 @@ export function Hero() {
           </div>
         )}
         <Doodle def={sparkle} className="portrait__sparkle" />
+        {profile.motto.length > 0 && (
+          // Written out under the portrait once it has been pulled into place.
+          <Handwritten lines={profile.motto} wait={intro} className="portrait__motto" />
+        )}
         {siteConfig.portraitPet && <Shepherd intro={intro} />}
         </motion.div>
       </div>

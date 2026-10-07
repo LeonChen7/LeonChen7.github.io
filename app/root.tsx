@@ -17,7 +17,7 @@ export const links = () => [
 
 // Animated blocks start hidden in the static HTML; without JavaScript they
 // would stay hidden, so show them outright in that case.
-const NO_JS = "[data-reveal]{opacity:1!important;transform:none!important}";
+const NO_JS = "[data-reveal]{opacity:1!important;transform:none!important;clip-path:none!important}";
 
 export function Layout({ children }: { children: ReactNode }) {
   return (

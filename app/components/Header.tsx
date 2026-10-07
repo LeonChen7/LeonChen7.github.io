@@ -1,4 +1,3 @@
-import { Link } from "react-router";
 import profile from "../content/profile.json";
 
 interface Props {
@@ -8,9 +7,6 @@ interface Props {
 export function Header({ nav }: Props) {
   return (
     <header className="header">
-      <Link to="/" className="header__name">
-        {profile.name}
-      </Link>
       <nav aria-label="Primary" className="header__nav">
         {nav.map((item) => (
           <a key={item.id} href={`/#${item.id}`}>

@@ -40,5 +40,6 @@
   "portrait": "/assets/img/portrait.jpg",
   "portraitSketch": "/assets/img/portrait-sketch.svg",
   "portraitNote": "that's me",
+  "motto": ["We are what", "we repeatedly do."],
   "cv": "#top"
 }
