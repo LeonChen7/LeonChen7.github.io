@@ -1,0 +1,728 @@
+:root {
+  --bg: #f6f7f8;
+  --ink: #16181d;
+  --muted: #555b66;
+  --line: #d9dce1;
+  --chip: #b9bec7;
+  --panel: #e4e7eb;
+  --accent: #2b4fc2; /* overridden from site.config.ts */
+  --serif: "Source Serif 4", "Source Serif Pro", Georgia, serif;
+  --sans: "Hanken Grotesk", "Helvetica Neue", Helvetica, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+  --hand: "Caveat", "Bradley Hand", cursive;
+  --meta: 0.875rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* The portrait slides in from beyond the right edge; no scrollbar for that. */
+  overflow-x: clip;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--serif); /* running text; headings use --sans */
+  font-size: 1.1875rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--ink);
+  text-underline-offset: 4px;
+}
+
+a:hover {
+  color: var(--accent);
+}
+
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+.header__name,
+.note-list__title {
+  font-family: var(--sans);
+}
+
+/* Uses most of a laptop/desktop screen; side padding grows with the window. */
+.page {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 6vw, 6rem);
+}
+
+.doodle {
+  display: block;
+  overflow: visible;
+  flex: none;
+}
+
+/* ---------- header ---------- */
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 2rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.header a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  text-decoration: none;
+}
+
+.header__name {
+  font-weight: 700;
+  font-size: 1.1875rem;
+  letter-spacing: -0.01em;
+}
+
+.header__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.75rem;
+  font-family: var(--mono);
+  font-size: var(--meta);
+}
+
+.header__cv {
+  color: var(--accent);
+}
+
+/* ---------- hero ---------- */
+
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 3rem 4rem;
+  padding: clamp(4rem, 7vw, 7rem) 0 clamp(4rem, 6vw, 6rem);
+}
+
+.hero__text {
+  flex: 1 1 480px;
+  max-width: 46rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.hero__kicker {
+  font-family: var(--mono);
+  font-size: var(--meta);
+  color: var(--muted);
+}
+
+.hero__name {
+  font-size: clamp(2.5rem, 6vw, 5.25rem);
+  line-height: 1.02;
+  font-weight: 600;
+  letter-spacing: -0.035em;
+}
+
+.hero__nick {
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.hero__bio {
+  font-size: clamp(1.375rem, 1.7vw, 1.75rem);
+  line-height: 1.55;
+  max-width: 44rem;
+  text-wrap: pretty;
+}
+
+.hero__bio strong {
+  font-weight: 600;
+}
+
+/* inline-block so the word can be moved; see FallingKeyword in Hero.tsx */
+.hero__falling {
+  display: inline-block;
+}
+
+.chips {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-family: var(--mono);
+  font-size: var(--meta);
+}
+
+.chips li {
+  border: 1px solid var(--chip);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+}
+
+/* Light tint from the chip's hue; same lightness for all so none shouts. */
+.chips .chip--tinted {
+  background: oklch(0.945 0.03 var(--hue));
+  border-color: oklch(0.85 0.05 var(--hue));
+}
+
+.hero__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.75rem;
+  font-weight: 500;
+}
+
+.hero__links a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.portrait {
+  flex: 1 1 240px;
+  max-width: clamp(300px, 26vw, 380px);
+  position: relative;
+  margin-top: 2.5rem;
+  margin-right: 3.5rem;
+}
+
+.portrait__rig {
+  position: relative;
+}
+
+.portrait__note {
+  position: absolute;
+  top: -3.6rem;
+  left: -0.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  transform: rotate(-5deg);
+  font-family: var(--hand);
+  font-size: 1.75rem;
+  line-height: 1;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.portrait__note .doodle {
+  margin-top: 0.4rem;
+}
+
+.portrait__frame {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 50% 62%; /* keep the face in frame when the photo is taller */
+  background: var(--panel);
+  border: 2px solid var(--ink);
+  border-radius: 3px 14px 4px 12px / 12px 4px 14px 3px;
+}
+
+.portrait__frame--tilted {
+  transform: rotate(2deg);
+}
+
+/* The two-sided portrait. The button tilts and sets the 3D depth; the card
+   inside turns over; each face hides when it is turned away. */
+.portrait__flip {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  transform: rotate(2deg);
+  perspective: 1200px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.portrait__flip:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+  border-radius: 12px;
+}
+
+.portrait__card {
+  display: block;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.portrait__card .portrait__frame {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.portrait__back {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  transform: rotateY(180deg);
+}
+
+.portrait__frame--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: var(--meta);
+  color: var(--muted);
+}
+
+.portrait__sparkle {
+  position: absolute;
+  right: -1.25rem;
+  bottom: -1.5rem;
+}
+
+.shepherd {
+  position: absolute;
+  /* left/top (set from Shepherd.tsx) place the dog's feet. */
+  width: 68px;
+  margin: -65px 0 0 -34px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  z-index: 1;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Taut rope from the dog's mouth to the portrait's left edge (intro only). */
+.shepherd__rope {
+  position: absolute;
+  left: calc(-42% + 24px);
+  width: calc(42% - 22px);
+  top: calc(74% - 37px);
+  height: 2px;
+  border-radius: 1px;
+  background: var(--ink);
+}
+
+.shepherd:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 6px;
+}
+
+.shepherd__hop,
+.shepherd__art {
+  display: block;
+}
+
+.shepherd__art {
+  width: 100%;
+  overflow: visible;
+}
+
+.shepherd__tail {
+  transform-box: view-box;
+  transform-origin: 59px 62px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .shepherd:hover .shepherd__tail {
+    animation: shepherd-wag 0.22s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes shepherd-wag {
+  from {
+    transform: rotate(-12deg);
+  }
+  to {
+    transform: rotate(16deg);
+  }
+}
+
+/* ---------- sections ---------- */
+
+.section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 4rem;
+  padding: clamp(3rem, 4.5vw, 4.5rem) 0;
+  border-top: 1px solid var(--line);
+}
+
+.section__label {
+  flex: 1 1 200px;
+  max-width: 22rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.section__label h2 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  padding-left: 0.875rem;
+  border-left: 4px solid var(--bar, var(--accent));
+}
+
+.section__body {
+  flex: 999 1 560px;
+  min-width: 0;
+}
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.rows--loose {
+  gap: 2.25rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 2rem;
+}
+
+.row__meta {
+  flex: 0 0 9rem;
+  font-family: var(--mono);
+  font-size: var(--meta);
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.row__main {
+  flex: 1 1 20rem;
+  min-width: 0;
+}
+
+/* Dots joined by a line, newest entry first. */
+.timeline {
+  position: relative;
+  padding-left: 1.75rem;
+}
+
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 0.75rem;
+  bottom: 0.25rem;
+  width: 2px;
+  background: var(--line);
+}
+
+.timeline__item {
+  position: relative;
+}
+
+/* Keep the text column lined up with the other sections. */
+.timeline .row__meta {
+  flex-basis: calc(9rem - 1.75rem);
+}
+
+.timeline__item::before {
+  content: "";
+  position: absolute;
+  left: -1.75rem;
+  top: 0.5rem;
+  width: 10px;
+  height: 10px;
+  box-sizing: border-box;
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+.timeline__item:first-child::before {
+  border-color: var(--accent);
+}
+
+.entry {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  max-width: 48rem;
+}
+
+.entry h3 {
+  font-size: 1.3125rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.entry__org {
+  color: var(--muted);
+}
+
+.entry__org strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.entry p {
+  margin-top: 0.5rem;
+  max-width: 44rem;
+}
+
+.entry__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1.25rem;
+  font-family: var(--mono);
+  font-size: var(--meta);
+  color: var(--muted);
+}
+
+.entry__links a {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.empty-note {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.note-list__row {
+  padding: 0.875rem 0;
+  border-bottom: 1px solid var(--line);
+  text-decoration: none;
+  min-height: 44px;
+}
+
+.note-list__title {
+  font-size: 1.1875rem;
+  font-weight: 500;
+}
+
+/* ---------- gallery ---------- */
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.gallery__intro {
+  max-width: 44rem;
+  text-wrap: pretty;
+}
+
+/* A pile of prints on the left, the top one's description on the right. */
+.stack {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem 3.5rem;
+}
+
+.stack__pile {
+  flex: 1 1 340px;
+  max-width: 560px;
+  position: relative;
+  aspect-ratio: 5 / 4; /* keep in step with PILE_RATIO in Gallery.tsx */
+  margin-top: 40px; /* room for the photos peeking out above */
+}
+
+.stack__card {
+  position: absolute;
+  inset: 0;
+  margin: auto; /* centres prints that are narrower or shorter than the box */
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--chip);
+  box-shadow: 0 10px 30px -12px rgb(22 24 29 / 0.35);
+  padding: 0;
+  cursor: pointer;
+}
+
+.stack__card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.stack__card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
+  pointer-events: none;
+}
+
+.stack__text {
+  flex: 1 1 260px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-height: 9rem;
+}
+
+.stack__text h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+.stack__text p {
+  max-width: 30rem;
+}
+
+.stack__meta {
+  font-family: var(--mono);
+  font-size: var(--meta);
+  font-weight: 400;
+  color: var(--muted);
+}
+
+/* ---------- note page ---------- */
+
+.note {
+  max-width: 42rem;
+  padding: 3.5rem 0 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.note h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin-top: 0.5rem;
+  text-wrap: balance;
+}
+
+.note__back {
+  font-family: var(--mono);
+  font-size: var(--meta);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  align-self: flex-start;
+}
+
+.note__summary {
+  color: var(--muted);
+  font-size: 1.3125rem;
+  margin-top: 0.75rem;
+}
+
+.prose {
+  font-size: 1.25rem;
+  line-height: 1.7;
+}
+
+.prose > * + * {
+  margin-top: 1.25rem;
+}
+
+.prose h2,
+.prose h3 {
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+  margin-top: 2.5rem;
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+}
+
+.prose h3 {
+  font-size: 1.1875rem;
+}
+
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.875em;
+  background: var(--panel);
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+}
+
+.prose pre {
+  background: var(--ink);
+  color: var(--bg);
+  padding: 1rem 1.25rem;
+  border-radius: 4px;
+  overflow-x: auto;
+  line-height: 1.55;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+}
+
+.prose blockquote {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 1.25rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.prose img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ---------- footer ---------- */
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 2rem;
+  padding: 2.5rem 0 4rem;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: var(--meta);
+  color: var(--muted);
+}
