@@ -92,6 +92,8 @@ export function Hero() {
               <FallingKeyword text={text} index={index} trailing={trailing} />
             ))}
           </p>
+          {/* A quieter line of its own, set apart from the introduction. */}
+          {profile.bioNote && <p className="hero__note">{withLinks(profile.bioNote)}</p>}
         </Item>
         <Item>
           <ul aria-label="Research interests" className="chips">
