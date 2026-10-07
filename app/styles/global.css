@@ -20,6 +20,8 @@
 }
 
 html {
+  /* Everything sized in rem scales from here: 87.5% = 14px instead of 16px. */
+  font-size: 87.5%;
   scroll-behavior: smooth;
   /* The portrait slides in from beyond the right edge; no scrollbar for that. */
   overflow-x: clip;
@@ -72,7 +74,7 @@ h3,
 
 /* Uses most of a laptop/desktop screen; side padding grows with the window. */
 .page {
-  max-width: 1280px;
+  max-width: 1080px;
   margin: 0 auto;
   padding: 0 clamp(1.5rem, 4vw, 4rem);
 }
@@ -150,7 +152,7 @@ h3,
 }
 
 .hero__name {
-  font-size: clamp(2.5rem, 6vw, 5.25rem);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
   line-height: 1.02;
   font-weight: 600;
   letter-spacing: -0.035em;
@@ -162,7 +164,7 @@ h3,
 }
 
 .hero__bio {
-  font-size: clamp(1.1875rem, 1.3vw, 1.3125rem);
+  font-size: 1.1875rem;
   line-height: 1.55;
   max-width: 44rem;
   text-wrap: pretty;
@@ -214,7 +216,7 @@ h3,
 
 .portrait {
   flex: 1 1 240px;
-  max-width: clamp(300px, 26vw, 380px);
+  max-width: clamp(260px, 22vw, 320px);
   position: relative;
   margin-top: 2.5rem;
   margin-right: 3.5rem;
@@ -558,8 +560,8 @@ h3,
 }
 
 .stack__pile {
-  flex: 1 1 340px;
-  max-width: 560px;
+  flex: 1 1 320px;
+  max-width: 480px;
   position: relative;
   aspect-ratio: 5 / 4; /* keep in step with PILE_RATIO in Gallery.tsx */
   margin-top: 40px; /* room for the photos peeking out above */
