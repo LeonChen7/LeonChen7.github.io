@@ -144,7 +144,7 @@ export function Hero() {
           </div>
         )}
         {profile.portrait && profile.portraitSketch ? (
-          // Two-sided print: the photo on the front, a pencil sketch on the
+          // Two-sided print: the photo on the front, an illustration of it on the
           // back. Clicking it turns it over.
           <button
             type="button"
@@ -163,7 +163,7 @@ export function Hero() {
               <img
                 className="portrait__frame portrait__back"
                 src={profile.portraitSketch}
-                alt={`Cartoon sketch of ${profile.name}`}
+                alt={`Illustration of ${profile.name}`}
               />
             </motion.span>
           </button>
