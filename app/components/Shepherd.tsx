@@ -3,10 +3,10 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 /**
  * A small German Shepherd doodle.
- * - With `intro` on, it stands to the left of the portrait holding a rope in
- *   its mouth and leans back as if hauling the portrait in (the portrait's
- *   own slide-in lives in Hero.tsx).
- * - When `intro` turns off it drops the rope and trots up to its seat in the
+ * - With `intro` on, it has the portrait's bottom-left corner in its teeth
+ *   and backs away, leaning into each tug (the portrait's own slide and tilt
+ *   live in Hero.tsx; the dog is carried along with it).
+ * - When `intro` turns off it lets go and trots up to its seat in the
  *   top-left corner of the header, where it stays.
  * - It turns to face the cursor. Touching it with the cursor (or tapping it,
  *   or pressing Enter on it) sends it running somewhere else: one of the
@@ -35,8 +35,9 @@ const COAT = {
 // How big it is in the header, relative to its size beside the portrait.
 const SEATED_SCALE = 0.66;
 
-// Where it stands while pulling.
-const INTRO_SPOT = { left: "-42%", top: "74%" };
+// Where it stands while dragging: at the bottom-left corner, facing the
+// portrait, muzzle on the edge.
+const INTRO_SPOT = { left: "-8%", top: "100%" };
 
 type Place = "home" | number;
 type Position = { left: string; top: string };
@@ -120,7 +121,6 @@ export function Shepherd({ intro = false }: { intro?: boolean }) {
 
   return (
     <>
-      {intro && <span aria-hidden="true" className="shepherd__rope" />}
       <motion.button
         ref={ref}
         type="button"
@@ -137,14 +137,14 @@ export function Shepherd({ intro = false }: { intro?: boolean }) {
           className="shepherd__hop"
           animate={
             pull
-              ? { y: 0, rotate: [-4, -14, -4, -14, -4, -14, -4] } // leaning back on the rope
+              ? { y: [0, -3, 0, -3, 0, -3, 0], rotate: [-3, -12, -3, -12, -3, -12, -3] } // backing up, leaning into each tug
               : hop
                 ? farTrip
                   ? { y: [0, -12, 0, -10, 0, -10, 0, -8, 0, -6, 0], rotate: [0, -6, 4, -5, 4, -5, 3, -4, 3, -2, 0] }
                   : { y: [0, -12, 0, -9, 0, -6, 0], rotate: [0, -6, 4, -5, 3, -2, 0] }
                 : { y: 0, rotate: 0 }
           }
-          transition={{ duration: pull ? 2.4 : trip, ease: "easeInOut" }}
+          transition={{ duration: pull ? 2.7 : trip, ease: "easeInOut" }}
         >
           <svg
             aria-hidden="true"

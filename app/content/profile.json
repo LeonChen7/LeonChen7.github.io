@@ -3,7 +3,7 @@
   "nickname": "Leon",
   "kicker": "",
   "bio": "I am an undergraduate student at the [University of Illinois Urbana-Champaign](https://illinois.edu/), majoring in Computer Science & Statistics. My research interests are LLM Reasoning through **Test-Time Training**, and Memory Management for **Self-Evolving**, **Personalized** LLM Agents.",
-  "bioNote": "I'm always open to new opportunities and collaborations. Feel free to reach out.",
+  "bioNote": "I'm always open to opportunities and collaborations. Feel free to reach out.",
   "interests": [
     {
       "label": "LLM Reasoning",
@@ -39,7 +39,7 @@
   ],
   "location": "Champaign, IL 61820",
   "portrait": "/assets/img/portrait.jpg",
-  "portraitSketch": "/assets/img/portrait-illustration.jpg",
+  "portraitSketch": "/assets/img/portrait-line.svg",
   "portraitNote": "that's me",
   "motto": [
     "“We are what",

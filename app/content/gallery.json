@@ -1,5 +1,5 @@
 {
-  "intro": "Outside of classes and research, I like to travel, watch TV shows, and track down good food (even though Champaign doesn't offer that many options). I'm always happy to chat, about any of this or anything else.",
+  "intro": "Outside of research, I like to travel, watch neflix, and track down nice restaurant and cafe (even though Champaign doesn't offer that many options). I'm always happy to chat, about any of this or anything else.",
   "photos": [
     {
       "src": "/photos/washington.jpg",
@@ -15,9 +15,9 @@
       "width": 1200,
       "height": 1600,
       "alt": "A statue of a man reading on a bench, covered in snow, with a block of snow on its head",
-      "title": "Deep winter in the village",
+      "title": "Winter at Champaign",
       "meta": "Champaign, IL · 2025",
-      "description": "A campus statue keeps reading under a hat of snow."
+      "description": "The statue outside Grainger library, keeps reading under a hat of snow."
     },
     {
       "src": "/photos/suzhou-garden.jpg",
@@ -26,7 +26,7 @@
       "alt": "A young girl reading a booklet beside a stone table against a weathered garden wall",
       "title": "Reading in the crowd",
       "meta": "Suzhou · 2024",
-      "description": "A very crowded garden, and one little girl reading through all of it."
+      "description": "Crowded temple, and one little girl reading through all of it."
     },
     {
       "src": "/photos/suzhou-xiyuan.jpg",
@@ -35,7 +35,7 @@
       "alt": "Yellow ginkgo trees over a pale temple wall with dark roof tiles",
       "title": "Xiyuan Temple",
       "meta": "Suzhou · 2025",
-      "description": "Ginkgo season at Xiyuan Temple. The vegetarian noodles there are very good."
+      "description": "Ginkgo season at Xiyuan Temple. The vegetarian noodles there are the best."
     },
     {
       "src": "/photos/suzhou-pavilion.jpg",
@@ -53,16 +53,16 @@
       "alt": "A violinist and a man under a glowing street lamp at dusk, city lights behind",
       "title": "Street violin",
       "meta": "Prague, Czech Republic · 2024",
-      "description": "A violinist under a street lamp on Charles Bridge at blue hour."
+      "description": "Violinist couple under a street lamp on Charles Bridge at blue hour."
     },
     {
       "src": "/photos/prague-bench.jpg",
       "width": 1067,
       "height": 1600,
       "alt": "Two people seen from behind on a riverside bench under a tree, the low sun breaking through the leaves and the old town across the water",
-      "title": "Peaceful",
+      "title": "By the river",
       "meta": "Prague, Czech Republic · 2024",
-      "description": "A mother and daughter on a bench by the river, watching the sun go down. It felt very peaceful."
+      "description": "Mother and daughter on a bench by the river, watching the sun go down. Felt so peaceful."
     },
     {
       "src": "/photos/paris.jpg",
@@ -79,7 +79,7 @@
       "height": 1200,
       "alt": "The Hungarian Parliament Building lit gold at night, reflected in the Danube",
       "title": "Parliament at night",
-      "meta": "Budapest, Hungary",
+      "meta": "Budapest, Hungary · 2024",
       "description": "The Hungarian Parliament lit up over the Danube."
     },
     {
@@ -89,7 +89,7 @@
       "alt": "A wooden counter with small dishes under a row of red lanterns, willows outside the window",
       "title": "Lost in the old town",
       "meta": "Lijiang, Yunnan · 2024",
-      "description": "Got separated from my friends in Lijiang Old Town, and ended up eating noodles here."
+      "description": "Got separated from my friends in Lijiang Old Town, ended up eating noodles here."
     },
     {
       "src": "/photos/yulin-instax.jpg",
@@ -98,7 +98,7 @@
       "alt": "An Instax print of a person in a black zip hoodie and faded wide jeans, standing on a street at night",
       "title": "Old days",
       "meta": "Yulin · 2023",
-      "description": "One of my favorite Instax shots. Oh, the old days."
+      "description": "One of my favorite Instax shot, reminds me the days in highschool"
     }
   ]
 }

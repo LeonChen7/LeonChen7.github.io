@@ -61,8 +61,14 @@ function FallingKeyword({ text, index, trailing }: { text: string; index: number
 // back to the home page from a note.
 let introPlayed = false;
 
-// The portrait is hauled in from the right in three tugs.
-const TUGS = ["75vw", "48vw", "51vw", "23vw", "26vw", "0vw"];
+// The dog drags the portrait in from the right by its bottom-left corner, in
+// three tugs. Held by a corner, the portrait hangs tilted and swings a little
+// with each tug, then drops level with a small overshoot when the dog lets go.
+const DRAG = {
+  x: ["75vw", "48vw", "51vw", "23vw", "26vw", "0vw", "0vw", "0vw"],
+  rotate: [-6, -10, -5, -10, -5, -9, 2, 0],
+  times: [0, 0.26, 0.33, 0.58, 0.65, 0.88, 0.95, 1],
+};
 
 export function Hero() {
   const [first, ...rest] = profile.name.split(" ");
@@ -128,11 +134,12 @@ export function Hero() {
         <motion.div
           data-reveal
           className="portrait__rig"
-          initial={intro ? { x: TUGS[0] } : false}
-          animate={{ x: intro && !reduceMotion ? TUGS : "0vw" }}
+          style={{ transformOrigin: "0% 100%" }} // it pivots on the corner the dog holds
+          initial={intro ? { x: DRAG.x[0], rotate: DRAG.rotate[0] } : false}
+          animate={intro && !reduceMotion ? { x: DRAG.x, rotate: DRAG.rotate } : { x: "0vw", rotate: 0 }}
           transition={
             intro && !reduceMotion
-              ? { duration: 2.4, delay: 0.3, times: [0, 0.3, 0.38, 0.64, 0.72, 1], ease: "easeInOut" }
+              ? { duration: 2.7, delay: 0.3, times: DRAG.times, ease: "easeInOut" }
               : { duration: 0 }
           }
           onAnimationComplete={endIntro}
@@ -144,7 +151,7 @@ export function Hero() {
           </div>
         )}
         {profile.portrait && profile.portraitSketch ? (
-          // Two-sided print: the photo on the front, an illustration of it on the
+          // Two-sided print: the photo on the front, a line drawing on the
           // back. Clicking it turns it over.
           <button
             type="button"
@@ -163,7 +170,7 @@ export function Hero() {
               <img
                 className="portrait__frame portrait__back"
                 src={profile.portraitSketch}
-                alt={`Illustration of ${profile.name}`}
+                alt={`Line drawing of ${profile.name}`}
               />
             </motion.span>
           </button>

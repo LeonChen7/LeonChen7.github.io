@@ -1,5 +1,5 @@
-import { AnimatePresence, motion } from "motion/react";
-import { useState } from "react";
+import { AnimatePresence, motion, useInView, useReducedMotion, type Variants } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import gallery from "../content/gallery.json";
 import { withLinks } from "../lib/format";
 import { Item } from "../motion/Reveal";
@@ -20,6 +20,57 @@ const { photos } = gallery;
 export const isEmpty = () => !gallery.intro && photos.length === 0;
 
 /**
+ * A photo's caption, told rather than shown: the place and year fade in, the
+ * title rises into place, then the description is typed out (Typewriter).
+ */
+const TELL: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.055, delayChildren: 0.15 } },
+};
+const LINE: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } },
+};
+
+/**
+ * Types `text` out like a typewriter once `start` is on: one character at a
+ * time with a blinking caret, a slightly uneven rhythm, and a short pause after
+ * punctuation. The untyped rest is already laid out (invisibly), so the
+ * paragraph never reflows while it types. Screen readers get the whole text.
+ */
+function Typewriter({ text, start, delay = 550 }: { text: string; start: boolean; delay?: number }) {
+  const reduceMotion = useReducedMotion();
+  const [shown, setShown] = useState(0);
+  const done = shown >= text.length;
+
+  useEffect(() => {
+    if (!start || reduceMotion) return;
+    let i = 0;
+    let timer = window.setTimeout(function tick() {
+      i += 1;
+      setShown(i);
+      if (i >= text.length) return;
+      const ch = text[i - 1];
+      const pause = /[.,;:!?]/.test(ch) ? 260 : ch === " " ? 55 : 0;
+      timer = window.setTimeout(tick, 26 + Math.random() * 30 + pause);
+    }, delay);
+    return () => window.clearTimeout(timer);
+  }, [start, text, delay, reduceMotion]);
+
+  if (reduceMotion) return <p>{text}</p>;
+  return (
+    <p className="typewriter">
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">
+        {text.slice(0, shown)}
+        <span className={done ? "typewriter__caret typewriter__caret--done" : "typewriter__caret"} />
+        <span className="typewriter__rest">{text.slice(shown)}</span>
+      </span>
+    </p>
+  );
+}
+
+/**
  * The photo stack: photos lie on top of one another like a pile of prints,
  * with the top one's description beside it. Clicking the pile puts the top
  * photo at the back and shows the next one.
@@ -32,6 +83,9 @@ function PhotoStack() {
   const count = photos.length;
   const next = () => setCurrent((c) => (c + 1) % count);
   const photo = photos[current];
+  // The first caption is told once the stack scrolls into view.
+  const textRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(textRef, { once: true, amount: 0.5 });
 
   return (
     <div className="stack">
@@ -75,21 +129,29 @@ function PhotoStack() {
         })}
       </div>
 
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={current}
-          className="stack__text"
-          aria-live="polite"
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.2 }}
-        >
-          {photo.meta && <div className="stack__meta">{photo.meta}</div>}
-          {photo.title && <h3>{photo.title}</h3>}
-          {photo.description && <p>{photo.description}</p>}
-        </motion.div>
-      </AnimatePresence>
+      <div ref={textRef} className="stack__text" aria-live="polite">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={current}
+            className="stack__tell"
+            variants={TELL}
+            initial="hidden"
+            animate={inView ? "show" : "hidden"}
+            // Leaving is quick, so the next story is not kept waiting.
+            exit={{ opacity: 0, transition: { duration: 0.18 } }}
+          >
+            {photo.meta && (
+              <motion.div className="stack__meta" variants={LINE}>
+                {photo.meta}
+              </motion.div>
+            )}
+            {photo.title && <motion.h3 variants={LINE}>{photo.title}</motion.h3>}
+            {photo.description && (
+              <Typewriter text={photo.description} start={inView} />
+            )}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
