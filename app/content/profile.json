@@ -2,17 +2,9 @@
   "name": "Yiyu Chen",
   "nickname": "Leon",
   "kicker": "",
-  "bio": "I am an undergraduate student at the [University of Illinois Urbana-Champaign](https://illinois.edu/), majoring in Computer Science & Statistics. My research interests are LLM Reasoning through **Test-Time Training**, and Memory Management for **Self-Evolving**, **Personalized** LLM Agents.",
+  "bio": "I am an undergraduate student at the [University of Illinois Urbana-Champaign](https://illinois.edu/), majoring in Computer Science & Statistics. My research interests are **Memory Management** for **Self-Evolving** LLM agents and **LLM Reasoning** with **Test-Time Training**.",
   "bioNote": "I'm always open to opportunities and collaborations. Feel free to reach out.",
   "interests": [
-    {
-      "label": "LLM Reasoning",
-      "group": "reasoning"
-    },
-    {
-      "label": "Test-Time Training",
-      "group": "reasoning"
-    },
     {
       "label": "Agent Memory Management",
       "group": "agents"
@@ -24,6 +16,14 @@
     {
       "label": "Personalized Agents",
       "group": "agents"
+    },
+    {
+      "label": "LLM Reasoning",
+      "group": "reasoning"
+    },
+    {
+      "label": "Test-Time Training",
+      "group": "reasoning"
     }
   ],
   "email": "yiyuc5@illinois.edu",
